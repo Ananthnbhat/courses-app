@@ -18,8 +18,7 @@ class CoursesPage extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
         // debugger;
-        this.props.dispatch(courseActions.createCourse(this.state.course));
-        // this.props.createCourse(this.state.course);
+        this.props.createCourse(this.state.course);
     }
 
     render() {
@@ -44,12 +43,11 @@ CoursesPage.propTypes = {
     courses: PropTypes.array.isRequired
 }
 
-// function mapDispatchToProps(dispatch) {
-//     return {
-// createCourse: course => dispatch(courseActions.createCourse(course))
-// createCourse: bindActionCreators((courseActions, dispatch))
-//     };
-// }
+function mapDispatchToProps(dispatch) {
+    return {
+        createCourse: course => dispatch(courseActions.createCourse(course))
+    };
+}
 
 function mapStateToProps(state) {
     // debugger;
@@ -57,6 +55,6 @@ function mapStateToProps(state) {
         courses: state.courses
     }
 }
-export default connect(mapStateToProps)(CoursesPage);
+export default connect(mapStateToProps, mapDispatchToProps)(CoursesPage);
 //we have an option not to use mapDispatchToProps, so that manually we can dispatch an action.
 //when we dont use it, the dispatch prop gets injected automatically, which we can use to dispatch our actions
