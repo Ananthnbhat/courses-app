@@ -2,7 +2,10 @@
   "name": "ps-redux",
   "description": "React and Redux app",
   "scripts": {
-    "start": "webpack-dev-server --config webpack.config.dev.js --port 3000"
+    "start": "run-p start:dev start:api",
+    "start:dev": "webpack-dev-server --config webpack.config.dev.js --port 3000",
+    "prestart:api": "node src/tools/createMockDb.js",
+    "start:api": "node src/tools/apiServer.js"
   },
   "dependencies": {
     "bootstrap": "4.3.1",
