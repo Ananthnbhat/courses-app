@@ -1,60 +1,68 @@
 import React from "react";
 import { connect } from 'react-redux';
 import * as courseActions from '../../redux/actions/courseActions';
+import * as authorActions from '../../redux/actions/authorActions';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import CoureList from './CourseList'
 
 class CoursesPage extends React.Component {
 
-    state = {
-        course: {
-            title: ""
+    componentDidMount() {
+
+        const { courses, authors, actions } = this.props;
+
+        if (courses.length === 0) {
+            actions.loadCourses().catch(error => {
+                alert("Loading courses failed" + error);
+            });
         }
-    }
-    handleChange = event => {
-        const course = { ...this.state.course, title: event.target.value };
-        this.setState({ course });
-    }
-    handleSubmit = event => {
-        event.preventDefault();
-        // debugger;
-        this.props.actions.createCourse(this.state.course);
+        if (authors.length === 0) {
+            actions.loadAuthors().catch(error => {
+                alert("Loading authors failed" + error);
+            });
+        }
     }
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <>
                 <h2>Courses</h2>
-                <h3>Add Course</h3>
-                <input type="text" onChange={this.handleChange} value={this.state.course.title} />
-                <input type="submit" value="Save" />
-                {
-                    this.props.courses.map(course => (
-                        <div key={course.title}>{course.title}</div>
-                    ))
-                }
-            </form>
+                <CoureList courses={this.props.courses} />
+            </>
         )
     }
 }
 
 CoursesPage.propTypes = {
     actions: PropTypes.object.isRequired,
-    courses: PropTypes.array.isRequired
+    courses: PropTypes.array.isRequired,
+    authors: PropTypes.array.isRequired
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(courseActions, dispatch)
+        actions: {
+            loadCourses: bindActionCreators(courseActions.loadCourses, dispatch),
+            loadAuthors: bindActionCreators(authorActions.loadAuthors, dispatch)
+        }
     };
 }
 
 function mapStateToProps(state) {
-    // debugger;
+
     return {
-        courses: state.courses
+        courses:
+            state.authors.length === 0 ?
+                [] : state.courses.map(course => {
+                    return {
+                        ...course,
+                        authorName: state.authors.find(a => a.id === course.authorId).name
+                    };
+                }),
+        authors: state.authors
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CoursesPage);
 //we have an option not to use mapDispatchToProps, so that manually we can dispatch an action.
-//when we dont use it, the dispatch prop gets injected automatically, which we can use to dispatch our actions
+//when we dont use it, the dispatch prop gets injected automatically, which can be used to dispatch our actions
