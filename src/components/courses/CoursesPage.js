@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import CoureList from './CourseList'
 import { Redirect } from 'react-router-dom';
+import Spinner from '../common/Spinner';
 
 class CoursesPage extends React.Component {
 
@@ -34,13 +35,18 @@ class CoursesPage extends React.Component {
             <>
                 {this.state.redirectToAddCoursePage && <Redirect to="/course" />}
                 <h2>Courses</h2>
-                <button
-                    style={{ marginBottom: 20 }}
-                    className="btn btn-primary add-course"
-                    onClick={() => this.setState({ redirectToAddCoursePage: true })}>
-                    Add Course
-                    </button>
-                <CoureList courses={this.props.courses} />
+                {this.props.loading ?
+                    (<Spinner />) : (
+                        <>
+                            <button
+                                style={{ marginBottom: 20 }}
+                                className="btn btn-primary add-course"
+                                onClick={() => this.setState({ redirectToAddCoursePage: true })}>
+                                Add Course
+                            </button>
+                            <CoureList courses={this.props.courses} />
+                        </>
+                    )}
             </>
         )
     }
@@ -49,7 +55,8 @@ class CoursesPage extends React.Component {
 CoursesPage.propTypes = {
     actions: PropTypes.object.isRequired,
     courses: PropTypes.array.isRequired,
-    authors: PropTypes.array.isRequired
+    authors: PropTypes.array.isRequired,
+    loading: PropTypes.bool.isRequired
 }
 
 function mapDispatchToProps(dispatch) {
@@ -72,7 +79,8 @@ function mapStateToProps(state) {
                         authorName: state.authors.find(a => a.id === course.authorId).name
                     };
                 }),
-        authors: state.authors
+        authors: state.authors,
+        loading: state.apiCallsInProgress > 0
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CoursesPage);

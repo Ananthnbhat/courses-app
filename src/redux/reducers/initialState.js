@@ -1,5 +1,6 @@
 const initailState = {
     courses: [],
-    authors: []
+    authors: [],
+    apiCallsInProgress: 0
 }
 export default initailState;
