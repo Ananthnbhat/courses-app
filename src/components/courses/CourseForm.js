@@ -29,7 +29,7 @@ const CourseForm = ({ course, authors, onSave, onChange, saving = false, errors 
                     text: author.name
                 }))}
                 onChange={onChange}
-                error={errors.author}
+                error={errors.authorId}
             />
             <TextInput
                 name="category"
