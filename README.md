@@ -7,6 +7,9 @@
 3. **Install Node Packages.** - `npm install`
 4. **Install [React developer tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en) and [Redux Dev Tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)** in Chrome.
 5. Having issues? See below.
+6. Run `npm start` to run the app in local
+7. Run `npm run build` to run tests & create deployment build.
+8. If you need to make adjustments to how app is built or how tests are run, please look into package.json and webpack config files 
 
 ## Having Issues? Try these things first:
 

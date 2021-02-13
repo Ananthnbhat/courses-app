@@ -1,11 +1,27 @@
 {
   "name": "ps-redux",
-  "description": "React and Redux app",
+  "description": "React and Redux Pluralsight course by Cory House",
   "scripts": {
     "start": "run-p start:dev start:api",
     "start:dev": "webpack-dev-server --config webpack.config.dev.js --port 3000",
     "prestart:api": "node src/tools/createMockDb.js",
-    "start:api": "node src/tools/apiServer.js"
+    "start:api": "node src/tools/apiServer.js",
+    "test": "jest --watch",
+    "test:ci": "jest",
+    "clean:build": "rimraf ./build && mkdir build",
+    "prebuild": "run-p clean:build test:ci",
+    "build": "webpack --config webpack.config.prod.js",
+    "postbuild": "run-p start:api serve:build",
+    "serve:build": "http-server ./build"
+  },
+  "jest": {
+    "setupFiles": [
+      "./src/tools/testSetup.js"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/tools/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/src/tools/styleMock.js"
+    }
   },
   "dependencies": {
     "bootstrap": "4.3.1",
@@ -37,7 +53,7 @@
     "html-webpack-plugin": "3.2.0",
     "http-server": "^0.12.3",
     "jest": "24.5.0",
-    "json-server": "^0.16.2",
+    "json-server": "^0.16.3",
     "mini-css-extract-plugin": "0.5.0",
     "node-fetch": "^2.3.0",
     "npm-run-all": "4.1.5",
@@ -51,7 +67,7 @@
     "webpack": "4.29.6",
     "webpack-bundle-analyzer": "3.1.0",
     "webpack-cli": "3.3.0",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.2"
   },
   "engines": {
     "node": ">=8"

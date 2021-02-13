@@ -8,7 +8,7 @@ import { newCourse } from "../../tools/mockData";
 import Spinner from '../common/Spinner';
 import { toast } from 'react-toastify';
 
-function ManageCoursePage({ courses, authors, loadCourses, loadAuthors, saveCourse, history, ...props }) { //we are getting some of these props from mapDispatchToProps
+export function ManageCoursePage({ courses, authors, loadCourses, loadAuthors, saveCourse, history, ...props }) { //we are getting some of these props from mapDispatchToProps
 
     const [course, setCourse] = useState({ ...props.course });
     const [errors, setErrors] = useState({});
